@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getAllPosts, getRecentPosts } from "@/lib/posts";
 import { CATEGORIES, SITE } from "@/lib/constants";
 import { PostCard } from "@/components/blog/PostCard";
+import { PixelAvatar } from "@/components/ui/PixelAvatar";
 
 export default function HomePage() {
   const recentPosts = getRecentPosts(3);
@@ -21,8 +22,8 @@ export default function HomePage() {
     <div className="mx-auto max-w-5xl px-4 py-16">
       {/* ── Hero ── */}
       <section className="pb-12 pt-6 text-center sm:pt-12">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-2xl font-bold text-white shadow-lg shadow-primary/25">
-          &gt;_
+        <div className="mx-auto mb-6 flex justify-center">
+          <PixelAvatar size={96} />
         </div>
         <h1 className="mb-2 text-4xl font-bold tracking-tight sm:text-5xl">
           <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -30,7 +31,7 @@ export default function HomePage() {
           </span>
         </h1>
         <p className="mb-1 text-lg font-medium text-text-secondary">
-          全栈开发者 / 造物爱好者
+          网络安全 / AI For CyberSecurity
         </p>
         <p className="mx-auto max-w-lg text-text-secondary">
           {SITE.description}
