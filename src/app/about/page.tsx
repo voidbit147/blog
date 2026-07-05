@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
-import { PixelAvatar } from "@/components/ui/PixelAvatar";
+import { Avatar } from "@/components/ui/Avatar";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -14,7 +14,7 @@ export default function AboutPage() {
 
       <div className="prose max-w-none">
         <div className="mb-10 flex items-center gap-6">
-          <PixelAvatar size={80} />
+          <Avatar size={80} />
           <div>
             <h2 className="text-2xl font-bold">
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">

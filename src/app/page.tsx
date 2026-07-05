@@ -2,7 +2,7 @@ import Link from "next/link";
 import { getAllPosts, getRecentPosts } from "@/lib/posts";
 import { CATEGORIES, SITE } from "@/lib/constants";
 import { PostCard } from "@/components/blog/PostCard";
-import { PixelAvatar } from "@/components/ui/PixelAvatar";
+import { Avatar } from "@/components/ui/Avatar";
 
 export default function HomePage() {
   const recentPosts = getRecentPosts(3);
@@ -23,7 +23,7 @@ export default function HomePage() {
       {/* ── Hero ── */}
       <section className="pb-12 pt-6 text-center sm:pt-12">
         <div className="mx-auto mb-6 flex justify-center">
-          <PixelAvatar size={96} />
+          <Avatar size={96} />
         </div>
         <h1 className="mb-2 text-4xl font-bold tracking-tight sm:text-5xl">
           <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
