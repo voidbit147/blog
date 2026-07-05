@@ -53,7 +53,7 @@ export function TableOfContents({ content }: { content: string }) {
 
   return (
     <nav className="text-sm">
-      <h4 className="mb-3 font-semibold text-text">On this page</h4>
+      <h4 className="mb-3 font-semibold text-text">本页目录</h4>
       <ul className="space-y-1.5 border-l-2 border-border">
         {headings.map(({ id, text, level }) => (
           <li key={id}>

@@ -3,8 +3,8 @@ import { getAllPosts, getAllCategories, getAllTags } from "@/lib/posts";
 import { PostCard } from "@/components/blog/PostCard";
 
 export const metadata: Metadata = {
-  title: "Blog",
-  description: "All blog posts",
+  title: "博客",
+  description: "全部文章",
 };
 
 export default function BlogPage() {
@@ -14,14 +14,14 @@ export default function BlogPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold tracking-tight">All posts</h1>
+      <h1 className="mb-8 text-3xl font-bold tracking-tight">全部文章</h1>
 
       <div className="grid gap-10 lg:grid-cols-[240px_1fr]">
-        {/* Sidebar filters */}
+        {/* 侧边筛选 */}
         <aside className="space-y-6">
-          {/* Categories */}
+          {/* 分类 */}
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-text">Categories</h3>
+            <h3 className="mb-2 text-sm font-semibold text-text">分类</h3>
             <div className="flex flex-col gap-1">
               {categories.map(({ name, count }) => (
                 <a
@@ -38,9 +38,9 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Tags */}
+          {/* 标签 */}
           <div>
-            <h3 className="mb-2 text-sm font-semibold text-text">Tags</h3>
+            <h3 className="mb-2 text-sm font-semibold text-text">标签</h3>
             <div className="flex flex-wrap gap-1.5">
               {tags.map(({ name, count }) => (
                 <a
@@ -56,11 +56,11 @@ export default function BlogPage() {
           </div>
         </aside>
 
-        {/* Post list */}
+        {/* 文章列表 */}
         <div className="min-w-0">
           {posts.length === 0 ? (
             <div className="rounded-xl border border-dashed border-border p-12 text-center">
-              <p className="text-text-secondary">No posts yet.</p>
+              <p className="text-text-secondary">还没有文章，敬请期待。</p>
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2">

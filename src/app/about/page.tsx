@@ -2,68 +2,71 @@ import type { Metadata } from "next";
 import { SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "About",
-  description: `About ${SITE.author.name}`,
+  title: "关于",
+  description: `关于 ${SITE.author.name}`,
 };
 
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="mb-8 text-3xl font-bold">About</h1>
+      <h1 className="mb-8 text-3xl font-bold">关于</h1>
 
       <div className="prose max-w-none">
         <div className="mb-10 flex items-center gap-6">
           <div className="flex h-20 w-20 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-3xl font-bold text-white shadow-lg shadow-primary/25">
-            &gt;_
+            V
           </div>
           <div>
-            <h2 className="text-2xl font-bold">{SITE.author.name}</h2>
-            <p className="text-text-secondary">Software Developer</p>
+            <h2 className="text-2xl font-bold">
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                V0idbit
+              </span>
+            </h2>
+            <p className="text-text-secondary">全栈开发者 / 造物爱好者</p>
           </div>
         </div>
 
         <p>
-          I&apos;m a software developer who enjoys building things — from web
-          applications to developer tools. This blog is where I document things I
-          learn, problems I solve, and ideas I&apos;m exploring.
+          你好，我是 V0idbit。我热爱构建——从 Web 应用到开发工具，从系统架构到创意编程。
+          这个博客是我记录学习、分享思考和沉淀经验的地方。
         </p>
 
-        <h3>What I write about</h3>
+        <h3>我写些什么</h3>
         <ul>
-          <li>Web development with React, Next.js, and TypeScript</li>
-          <li>Developer tools and productivity</li>
-          <li>Software architecture and patterns</li>
-          <li>Tutorials and how-to guides</li>
+          <li>React、Next.js、TypeScript 等 Web 开发技术</li>
+          <li>开发工具与效率提升</li>
+          <li>软件架构与设计模式</li>
+          <li>实战教程与踩坑记录</li>
         </ul>
 
-        <h3>Tech stack for this blog</h3>
+        <h3>本站技术栈</h3>
         <ul>
           <li>
-            <strong>Framework:</strong> Next.js 16 (App Router, static export)
+            <strong>框架：</strong>Next.js 16（App Router + 静态导出）
           </li>
           <li>
-            <strong>Styling:</strong> Tailwind CSS v4 with custom theme tokens
+            <strong>样式：</strong>Tailwind CSS v4 + 自定义主题 Tokens
           </li>
           <li>
-            <strong>Content:</strong> MDX with custom components
+            <strong>内容：</strong>MDX + 自定义组件
           </li>
           <li>
-            <strong>Search:</strong> Fuse.js (client-side fuzzy search)
+            <strong>搜索：</strong>Fuse.js（客户端模糊搜索）
           </li>
           <li>
-            <strong>Comments:</strong> Giscus (GitHub Discussions)
+            <strong>评论：</strong>Giscus（基于 GitHub Discussions）
           </li>
           <li>
-            <strong>Fonts:</strong> Geist Sans + Geist Mono
+            <strong>字体：</strong>Geist Sans + Geist Mono
           </li>
           <li>
-            <strong>Hosting:</strong> GitHub Pages (free)
+            <strong>托管：</strong>GitHub Pages（免费）
           </li>
         </ul>
 
-        <h3>Contact</h3>
+        <h3>联系方式</h3>
         <p>
-          Find me on{" "}
+          欢迎在{" "}
           <a
             href={SITE.author.github}
             target="_blank"
@@ -71,8 +74,9 @@ export default function AboutPage() {
           >
             GitHub
           </a>{" "}
-          or reach out via{" "}
-          <a href={`mailto:${SITE.author.email}`}>email</a>.
+          上找到我，或通过{" "}
+          <a href={`mailto:${SITE.author.email}`}>邮件</a>{" "}
+          与我联系。
         </p>
       </div>
     </div>

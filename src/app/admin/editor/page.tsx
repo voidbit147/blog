@@ -3,7 +3,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { SITE } from "@/lib/constants";
-import type { Post } from "@/types";
 
 type SaveMode = "filesystem" | "github";
 
@@ -22,7 +21,7 @@ export default function AdminEditorPage() {
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(false);
 
-  // Load existing post
+  // 加载已有文章
   useEffect(() => {
     if (!slug) return;
     fetch(`${SITE.basePath}/search-index.json`)
@@ -42,7 +41,7 @@ export default function AdminEditorPage() {
       .catch(() => {});
   }, [slug]);
 
-  // Image paste handler
+  // 粘贴图片处理
   const handlePaste = useCallback(
     async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
       const items = e.clipboardData?.items;
@@ -54,14 +53,13 @@ export default function AdminEditorPage() {
           const file = item.getAsFile();
           if (!file) continue;
 
-          // Convert to data URL and insert into markdown
           const reader = new FileReader();
           reader.onload = (ev) => {
             const dataUrl = ev.target?.result as string;
             const textarea = e.target as HTMLTextAreaElement;
             const start = textarea.selectionStart;
             const end = textarea.selectionEnd;
-            const imageMd = `\n![pasted image](${dataUrl})\n`;
+            const imageMd = `\n![粘贴图片](${dataUrl})\n`;
             const newContent =
               content.slice(0, start) + imageMd + content.slice(end);
             setContent(newContent);
@@ -74,7 +72,7 @@ export default function AdminEditorPage() {
     [content],
   );
 
-  // Save handler
+  // 保存
   const handleSave = async (mode: SaveMode) => {
     setSaving(true);
     setError("");
@@ -96,7 +94,6 @@ ${tags
 ${content}`;
 
     if (mode === "filesystem") {
-      // In dev mode, save via API route
       try {
         const res = await fetch("/api/save-post", {
           method: "POST",
@@ -111,22 +108,17 @@ ${content}`;
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       } catch (err) {
-        setError(
-          mode === "filesystem"
-            ? "Dev mode save failed. Run the dev API route or save via GitHub."
-            : `Save failed: ${(err as Error).message}`,
-        );
+        setError(`保存失败：${(err as Error).message}`);
       }
     } else if (mode === "github") {
-      // GitHub API save
       const token = localStorage.getItem("github_token");
       if (!token) {
-        setError("GitHub token not set. Add it in localStorage as 'github_token'.");
+        setError("未设置 GitHub Token。请在 localStorage 中设置 'github_token'。");
         setSaving(false);
         return;
       }
       try {
-        const repo = "untitled1github/blog";
+        const repo = "Doub1e-Happy/blog";
         const filePath = `content/blog/${category}/${slug || title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.mdx`;
         const contentBase64 = btoa(unescape(encodeURIComponent(frontmatter)));
 
@@ -139,9 +131,8 @@ ${content}`;
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              message: `📝 Update ${title}`,
+              message: `📝 更新文章：${title}`,
               content: contentBase64,
-              ...(slug ? {} : {}), // Will need sha for updates
             }),
           },
         );
@@ -155,7 +146,7 @@ ${content}`;
         setSaved(true);
         setTimeout(() => setSaved(false), 3000);
       } catch (err) {
-        setError(`GitHub save failed: ${(err as Error).message}`);
+        setError(`GitHub 保存失败：${(err as Error).message}`);
       }
     }
     setSaving(false);
@@ -163,17 +154,17 @@ ${content}`;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      {/* Toolbar */}
+      {/* 工具栏 */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <button
             onClick={() => router.push("/admin")}
             className="rounded-lg border border-border px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text"
           >
-            &larr; Back
+            &larr; 返回
           </button>
           <h1 className="text-xl font-bold">
-            {slug ? "Edit Post" : "New Post"}
+            {slug ? "编辑文章" : "新建文章"}
           </h1>
         </div>
         <div className="flex gap-2">
@@ -181,29 +172,29 @@ ${content}`;
             onClick={() => setPreview(!preview)}
             className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary"
           >
-            {preview ? "Edit" : "Preview"}
+            {preview ? "编辑" : "预览"}
           </button>
           <button
             onClick={() => handleSave("filesystem")}
             disabled={saving}
             className="rounded-lg border border-border px-4 py-2 text-sm font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save (Dev)"}
+            {saving ? "保存中..." : "保存（本地）"}
           </button>
           <button
             onClick={() => handleSave("github")}
             disabled={saving}
             className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/25 disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save to GitHub"}
+            {saving ? "保存中..." : "保存到 GitHub"}
           </button>
         </div>
       </div>
 
-      {/* Status */}
+      {/* 状态提示 */}
       {saved && (
         <div className="mb-4 rounded-lg bg-green-500/10 px-4 py-2 text-sm text-green-600 dark:text-green-400">
-          ✓ Post saved successfully!
+          ✓ 文章保存成功！
         </div>
       )}
       {error && (
@@ -213,7 +204,7 @@ ${content}`;
       )}
 
       <div className={`grid gap-8 ${preview ? "" : "lg:grid-cols-[2fr_1fr]"}`}>
-        {/* Editor */}
+        {/* 编辑器 */}
         {!preview ? (
           <>
             <div className="space-y-6">
@@ -221,28 +212,28 @@ ${content}`;
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Post title"
+                placeholder="文章标题"
                 className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-xl font-bold text-text placeholder:text-text-secondary/30 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
               />
               <textarea
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 onPaste={handlePaste}
-                placeholder="Write your markdown here... Support image paste!"
+                placeholder="在这里写 Markdown... 支持粘贴图片！"
                 className="min-h-[60vh] w-full rounded-xl border border-border bg-surface p-4 font-mono text-sm text-text placeholder:text-text-secondary/30 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y"
               />
             </div>
 
-            {/* Meta sidebar */}
+            {/* 元信息侧栏 */}
             <div className="space-y-4">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-text">
-                  Description
+                  描述
                 </label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Brief description..."
+                  placeholder="文章摘要..."
                   rows={3}
                   className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text placeholder:text-text-secondary/30 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 resize-y"
                 />
@@ -250,48 +241,47 @@ ${content}`;
 
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-text">
-                  Category
+                  分类
                 </label>
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
-                  <option value="tech">Tech</option>
-                  <option value="tutorials">Tutorials</option>
-                  <option value="life">Life</option>
+                  <option value="tech">技术</option>
+                  <option value="tutorials">教程</option>
+                  <option value="life">生活</option>
                 </select>
               </div>
 
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-text">
-                  Tags (comma separated)
+                  标签（逗号分隔）
                 </label>
                 <input
                   type="text"
                   value={tags}
                   onChange={(e) => setTags(e.target.value)}
-                  placeholder="e.g. react, typescript, tutorial"
+                  placeholder="如：react, typescript, 教程"
                   className="w-full rounded-lg border border-border bg-surface px-3 py-2 text-sm text-text placeholder:text-text-secondary/30 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
 
               <div className="rounded-lg border border-border bg-bg-secondary p-3">
                 <p className="text-xs text-text-secondary">
-                  💡 <strong>Tip:</strong> Paste images directly into the editor.
-                  They will be embedded as base64 data URLs.
+                  💡 <strong>提示：</strong>直接在编辑器中粘贴图片即可嵌入。
                 </p>
               </div>
             </div>
           </>
         ) : (
-          /* Preview */
+          /* 预览 */
           <div className="rounded-xl border border-border bg-surface p-8">
             <div className="prose max-w-none">
               {content ? (
                 <MarkdownPreview content={content} />
               ) : (
-                <p className="text-text-secondary">Nothing to preview yet.</p>
+                <p className="text-text-secondary">暂无内容可预览。</p>
               )}
             </div>
           </div>
@@ -305,13 +295,10 @@ function MarkdownPreview({ content }: { content: string }) {
   const [html, setHtml] = useState("");
 
   useEffect(() => {
-    // Simple markdown → HTML for admin preview
-    // (Full MDX rendering happens on the actual post page)
     const lines = content.split("\n");
     const parts: string[] = [];
     let inCode = false;
     let codeBuf: string[] = [];
-    let codeLang = "";
 
     for (const line of lines) {
       if (line.startsWith("```")) {
@@ -325,7 +312,6 @@ function MarkdownPreview({ content }: { content: string }) {
           inCode = false;
         } else {
           inCode = true;
-          codeLang = line.slice(3).trim();
         }
         continue;
       }
@@ -355,11 +341,10 @@ function MarkdownPreview({ content }: { content: string }) {
       } else if (line.trim() === "") {
         parts.push("<br/>");
       } else {
-        // Bold, italic, inline code transformations
         let l = line;
         l = l.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
         l = l.replace(/\*(.+?)\*/g, "<em>$1</em>");
-        l = l.replace(/`(.+?)`/g, "<code class=\"bg-code-bg px-1 rounded text-sm font-mono\">$1</code>");
+        l = l.replace(/`(.+?)`/g, '<code class="bg-code-bg px-1 rounded text-sm font-mono">$1</code>');
         l = l.replace(
           /\[(.+?)\]\((.+?)\)/g,
           '<a href="$2" class="text-primary hover:underline">$1</a>',
@@ -368,7 +353,6 @@ function MarkdownPreview({ content }: { content: string }) {
       }
     }
 
-    // Close open code block
     if (inCode && codeBuf.length > 0) {
       parts.push(
         `<pre class="bg-code-bg border border-border rounded-lg p-4 overflow-x-auto my-4"><code class="text-sm font-mono">${codeBuf.join(

@@ -2,13 +2,11 @@ import Link from "next/link";
 import { getAllPosts, getRecentPosts } from "@/lib/posts";
 import { CATEGORIES, SITE } from "@/lib/constants";
 import { PostCard } from "@/components/blog/PostCard";
-import type { Post } from "@/types";
 
 export default function HomePage() {
   const recentPosts = getRecentPosts(3);
   const allPosts = getAllPosts();
 
-  // Build tag cloud
   const tagCount: Record<string, number> = {};
   for (const post of allPosts) {
     for (const tag of post.frontmatter.tags) {
@@ -26,10 +24,15 @@ export default function HomePage() {
         <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-2xl font-bold text-white shadow-lg shadow-primary/25">
           &gt;_
         </div>
-        <h1 className="mb-4 text-4xl font-bold tracking-tight sm:text-5xl">
-          {SITE.title}
+        <h1 className="mb-2 text-4xl font-bold tracking-tight sm:text-5xl">
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            V0idbit
+          </span>
         </h1>
-        <p className="mx-auto max-w-lg text-lg text-text-secondary">
+        <p className="mb-1 text-lg font-medium text-text-secondary">
+          全栈开发者 / 造物爱好者
+        </p>
+        <p className="mx-auto max-w-lg text-text-secondary">
           {SITE.description}
         </p>
         <div className="mt-8 flex items-center justify-center gap-3">
@@ -37,27 +40,27 @@ export default function HomePage() {
             href="/blog"
             className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/25"
           >
-            Read the blog
+            阅读博客
           </Link>
           <Link
             href="/about"
             className="rounded-xl border border-border px-6 py-2.5 text-sm font-semibold text-text-secondary transition-all hover:border-primary hover:text-primary"
           >
-            About me
+            关于我
           </Link>
         </div>
       </section>
 
-      {/* ── Recent Posts ── */}
+      {/* ── 最新文章 ── */}
       {recentPosts.length > 0 && (
         <section className="py-8">
           <div className="mb-6 flex items-center justify-between">
-            <h2 className="text-2xl font-bold">Recent posts</h2>
+            <h2 className="text-2xl font-bold">最新文章</h2>
             <Link
               href="/blog"
               className="text-sm font-medium text-primary transition-colors hover:text-primary-hover"
             >
-              View all &rarr;
+              查看全部 &rarr;
             </Link>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -68,9 +71,9 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ── Categories ── */}
+      {/* ── 分类 ── */}
       <section className="py-8">
-        <h2 className="mb-6 text-2xl font-bold">Categories</h2>
+        <h2 className="mb-6 text-2xl font-bold">分类</h2>
         <div className="grid gap-4 sm:grid-cols-3">
           {CATEGORIES.map((cat) => {
             const count = allPosts.filter(
@@ -89,7 +92,7 @@ export default function HomePage() {
                   {cat.description}
                 </p>
                 <span className="mt-3 inline-block rounded-full bg-bg-secondary px-2.5 py-0.5 text-xs font-medium text-text-secondary">
-                  {count} post{count !== 1 ? "s" : ""}
+                  {count} 篇
                 </span>
               </Link>
             );
@@ -97,10 +100,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Tag Cloud ── */}
+      {/* ── 标签云 ── */}
       {tags.length > 0 && (
         <section className="py-8">
-          <h2 className="mb-6 text-2xl font-bold">Topics</h2>
+          <h2 className="mb-6 text-2xl font-bold">话题</h2>
           <div className="flex flex-wrap gap-2">
             {tags.map(([tag, count]) => (
               <Link

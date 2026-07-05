@@ -1,10 +1,10 @@
 /**
- * @file Site-wide constants.
+ * @file 站点全局常量
  */
 
 export const SITE = {
-  title: "devLog",
-  description: "A personal tech blog about web development, systems, and creative coding.",
+  title: "V0idbit",
+  description: "全栈开发者的技术博客 — Web 开发、系统架构、创意编程。记录思考，分享造物。",
   url: "https://doub1e-happy.github.io/blog",
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   author: {
@@ -16,16 +16,16 @@ export const SITE = {
 } as const;
 
 export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/blog", label: "Blog" },
-  { href: "/search", label: "Search" },
-  { href: "/about", label: "About" },
+  { href: "/", label: "首页" },
+  { href: "/blog", label: "博客" },
+  { href: "/search", label: "搜索" },
+  { href: "/about", label: "关于" },
 ] as const;
 
 export const CATEGORIES = [
-  { slug: "tech", name: "Tech", description: "Deep dives into programming, architecture, and tools." },
-  { slug: "tutorials", name: "Tutorials", description: "Step-by-step guides and how-tos." },
-  { slug: "life", name: "Life", description: "Thoughts, experiences, and everything in between." },
+  { slug: "tech", name: "技术", description: "编程、架构与工具的深度探索。" },
+  { slug: "tutorials", name: "教程", description: "手把手的实战指南与踩坑记录。" },
+  { slug: "life", name: "生活", description: "随笔、感悟，以及代码之外的思考。" },
 ] as const;
 
 export const GISCUS = {

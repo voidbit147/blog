@@ -12,47 +12,47 @@ export function Footer() {
               href="/"
               className="text-lg font-bold text-text transition-colors hover:text-primary"
             >
-              <span className="text-primary">&gt;</span> {SITE.title}
+              <span className="text-primary">&gt;</span> V0idbit
             </Link>
             <p className="mt-2 text-sm text-text-secondary">
               {SITE.description}
             </p>
           </div>
 
-          {/* Links */}
+          {/* 链接 */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-text">Links</h4>
+            <h4 className="mb-3 text-sm font-semibold text-text">导航</h4>
             <nav className="flex flex-col gap-2 text-sm">
               <Link
                 href="/blog"
                 className="text-text-secondary transition-colors hover:text-primary"
               >
-                Blog
+                博客
               </Link>
               <Link
                 href="/search"
                 className="text-text-secondary transition-colors hover:text-primary"
               >
-                Search
+                搜索
               </Link>
               <Link
                 href="/about"
                 className="text-text-secondary transition-colors hover:text-primary"
               >
-                About
+                关于
               </Link>
               <Link
                 href="/feed.xml"
                 className="text-text-secondary transition-colors hover:text-primary"
               >
-                RSS Feed
+                RSS 订阅
               </Link>
             </nav>
           </div>
 
-          {/* Social */}
+          {/* 社交 */}
           <div>
-            <h4 className="mb-3 text-sm font-semibold text-text">Elsewhere</h4>
+            <h4 className="mb-3 text-sm font-semibold text-text">找到我</h4>
             <div className="flex flex-col gap-2 text-sm">
               <a
                 href={SITE.author.github}
@@ -74,8 +74,8 @@ export function Footer() {
 
         <div className="mt-8 border-t border-border pt-6 text-center text-sm text-text-secondary">
           <p>
-            &copy; {new Date().getFullYear()} {SITE.author.name}. Built with
-            Next.js &amp; deployed on GitHub Pages.
+            &copy; {new Date().getFullYear()} <strong className="text-text">V0idbit</strong>. 由
+            Next.js 驱动 &amp; 部署于 GitHub Pages.
           </p>
         </div>
       </div>

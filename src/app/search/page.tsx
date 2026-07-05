@@ -45,9 +45,9 @@ export default function SearchPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold">Search</h1>
+      <h1 className="mb-8 text-3xl font-bold">搜索</h1>
 
-      {/* Search input */}
+      {/* 搜索框 */}
       <div className="relative mb-8">
         <svg
           className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary/50"
@@ -66,46 +66,45 @@ export default function SearchPage() {
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search posts..."
+          placeholder="搜索文章..."
           autoFocus
           className="w-full rounded-xl border border-border bg-surface py-3.5 pl-12 pr-4 text-text placeholder:text-text-secondary/40 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
         />
       </div>
 
-      {/* Loading */}
+      {/* 加载中 */}
       {loading && (
         <div className="py-12 text-center text-text-secondary">
-          Loading search index...
+          正在加载搜索索引...
         </div>
       )}
 
-      {/* No query */}
+      {/* 空搜索提示 */}
       {!loading && !query.trim() && (
         <div className="py-12 text-center text-text-secondary">
-          <p className="text-lg font-medium">Type something to search</p>
+          <p className="text-lg font-medium">输入关键词开始搜索</p>
           <p className="mt-1 text-sm">
-            Search across post titles, descriptions, tags, and content
+            可搜索文章标题、描述、标签和正文内容
           </p>
         </div>
       )}
 
-      {/* No results */}
+      {/* 无结果 */}
       {!loading && query.trim() && results.length === 0 && (
         <div className="py-12 text-center text-text-secondary">
-          <p className="text-lg font-medium">No results for &ldquo;{query}&rdquo;</p>
-          <p className="mt-1 text-sm">Try a different search term</p>
+          <p className="text-lg font-medium">未找到与 &ldquo;{query}&rdquo; 相关的结果</p>
+          <p className="mt-1 text-sm">试试其他搜索词</p>
         </div>
       )}
 
-      {/* Results */}
+      {/* 搜索结果 */}
       {results.length > 0 && (
         <div className="space-y-4">
           <p className="text-sm text-text-secondary">
-            {results.length} result{results.length !== 1 ? "s" : ""} for
-            &ldquo;{query}&rdquo;
+            找到 {results.length} 条关于 &ldquo;{query}&rdquo; 的结果
           </p>
           {results.map((doc) => {
-            const date = new Date(doc.date).toLocaleDateString("en-US", {
+            const date = new Date(doc.date).toLocaleDateString("zh-CN", {
               year: "numeric",
               month: "short",
               day: "numeric",

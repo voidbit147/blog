@@ -22,7 +22,7 @@ export default function AdminPostsPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center text-text-secondary">
-        Loading...
+        加载中...
       </div>
     );
   }
@@ -30,18 +30,18 @@ export default function AdminPostsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Manage Posts</h1>
+        <h1 className="text-3xl font-bold">管理文章</h1>
         <Link
           href="/admin/editor"
           className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-hover"
         >
-          New Post
+          新建文章
         </Link>
       </div>
 
       {posts.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border p-12 text-center text-text-secondary">
-          No posts yet. Create your first post!
+          还没有文章，快去写第一篇吧！
         </div>
       ) : (
         <div className="space-y-2">
@@ -56,7 +56,7 @@ export default function AdminPostsPage() {
                     {post.category}
                   </span>
                   <span className="text-xs text-text-secondary/50">
-                    {new Date(post.date).toLocaleDateString()}
+                    {new Date(post.date).toLocaleDateString("zh-CN")}
                   </span>
                 </div>
                 <h3 className="truncate font-semibold text-text">
@@ -71,14 +71,14 @@ export default function AdminPostsPage() {
                   href={`/admin/editor?slug=${encodeURIComponent(post.slug)}`}
                   className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary"
                 >
-                  Edit
+                  编辑
                 </Link>
                 <Link
                   href={`/blog/${post.slug}`}
                   target="_blank"
                   className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary"
                 >
-                  View
+                  查看
                 </Link>
               </div>
             </div>

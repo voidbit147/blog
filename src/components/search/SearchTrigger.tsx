@@ -39,7 +39,7 @@ export function SearchTrigger() {
         <circle cx="9" cy="9" r="5" />
         <path d="M13 13l4 4" />
       </svg>
-      <span>Search</span>
+      <span>搜索</span>
       <kbd className="ml-2 rounded border border-border px-1.5 py-0.5 text-xs text-text-secondary/60">
         {meta ? "⌘K" : "Ctrl+K"}
       </kbd>

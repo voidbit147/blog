@@ -17,7 +17,7 @@ export async function generateMetadata({
   const post = getPostBySlug(slugStr);
 
   if (!post) {
-    return { title: "Not Found" };
+    return { title: "未找到" };
   }
 
   return {
@@ -28,7 +28,7 @@ export async function generateMetadata({
 
 export function generateStaticParams(): { slug: string[] }[] {
   return getAllPosts().map((post) => ({
-    slug: post.slug.split("/"), // e.g., "tech/typescript-generics" → ["tech", "typescript-generics"]
+    slug: post.slug.split("/"),
   }));
 }
 
@@ -45,7 +45,7 @@ export default async function BlogPostPage({
     notFound();
   }
 
-  const date = new Date(post.frontmatter.date).toLocaleDateString("en-US", {
+  const date = new Date(post.frontmatter.date).toLocaleDateString("zh-CN", {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -54,15 +54,15 @@ export default async function BlogPostPage({
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="grid gap-10 lg:grid-cols-[1fr_220px]">
-        {/* Main content */}
+        {/* 正文 */}
         <article className="min-w-0">
-          {/* Breadcrumb */}
+          {/* 面包屑 */}
           <div className="mb-6 flex items-center gap-2 text-sm text-text-secondary">
             <Link
               href="/blog"
               className="transition-colors hover:text-primary"
             >
-              Blog
+              博客
             </Link>
             <span>/</span>
             <Link
@@ -75,7 +75,7 @@ export default async function BlogPostPage({
             <span className="truncate text-text">{post.frontmatter.title}</span>
           </div>
 
-          {/* Header */}
+          {/* 文章头部 */}
           <header className="mb-10">
             <span className="mb-4 inline-block rounded-md bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary">
               {post.frontmatter.category}
@@ -91,23 +91,23 @@ export default async function BlogPostPage({
                 {date}
               </time>
               <span>&middot;</span>
-              <span>{post.readingTime} min read</span>
+              <span>阅读 {post.readingTime} 分钟</span>
               <span>&middot;</span>
-              <span>{post.wordCount.toLocaleString()} words</span>
+              <span>{post.wordCount.toLocaleString()} 字</span>
             </div>
             <TagList tags={post.frontmatter.tags} className="mt-4" />
           </header>
 
-          {/* Content */}
+          {/* 文章内容 */}
           <PostContent post={post} />
 
-          {/* Comments */}
+          {/* 评论区 */}
           <div className="mt-16 border-t border-border pt-10">
             <GiscusComments />
           </div>
         </article>
 
-        {/* Sidebar TOC */}
+        {/* 侧边目录 */}
         <aside className="hidden lg:block">
           <div className="sticky top-24">
             <TableOfContents content={post.content} />

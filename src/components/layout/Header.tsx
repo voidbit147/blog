@@ -32,7 +32,9 @@ export function Header() {
           href="/"
           className="text-xl font-bold tracking-tight text-text hover:text-primary transition-colors"
         >
-          <span className="text-primary">&gt;</span> {SITE.title}
+          <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            V0idbit
+          </span>
         </Link>
 
         {/* Desktop nav */}

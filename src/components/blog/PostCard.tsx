@@ -3,7 +3,7 @@ import type { Post } from "@/types";
 
 export function PostCard({ post }: { post: Post }) {
   const { slug, frontmatter, readingTime } = post;
-  const date = new Date(frontmatter.date).toLocaleDateString("en-US", {
+  const date = new Date(frontmatter.date).toLocaleDateString("zh-CN", {
     year: "numeric",
     month: "short",
     day: "numeric",

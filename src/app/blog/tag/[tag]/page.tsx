@@ -15,7 +15,7 @@ export async function generateMetadata({
   const { tag } = await params;
   return {
     title: `#${tag}`,
-    description: `Posts tagged with #${tag}`,
+    description: `标签 #${tag} 下的文章`,
   };
 }
 
@@ -43,7 +43,7 @@ export default async function TagPage({
           <span className="text-primary">#</span> {tag}
         </h1>
         <p className="mt-1 text-sm text-text-secondary/60">
-          {posts.length} post{posts.length !== 1 ? "s" : ""}
+          共 {posts.length} 篇
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

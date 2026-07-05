@@ -17,7 +17,7 @@ export async function generateMetadata({
   const catInfo = CATEGORIES.find((c) => c.slug === category);
   return {
     title: catInfo?.name || category,
-    description: catInfo?.description || `Posts in ${category}`,
+    description: catInfo?.description || `${category} 分类下的文章`,
   };
 }
 
@@ -42,12 +42,14 @@ export default async function CategoryPage({
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold capitalize">{catInfo?.name || category}</h1>
+        <h1 className="text-3xl font-bold">
+          {catInfo?.name || category}
+        </h1>
         {catInfo?.description && (
           <p className="mt-2 text-text-secondary">{catInfo.description}</p>
         )}
         <p className="mt-1 text-sm text-text-secondary/60">
-          {posts.length} post{posts.length !== 1 ? "s" : ""}
+          共 {posts.length} 篇
         </p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
