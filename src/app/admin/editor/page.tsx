@@ -165,7 +165,7 @@ ${content}`;
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <button
-            onClick={() => router.push("/admin/posts")}
+            onClick={() => router.push("/admin/posts.html")}
             className="rounded-lg border border-border px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text"
           >
             &larr; 返回
@@ -274,7 +274,7 @@ ${content}`;
                 <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
                   <p className="text-xs text-yellow-600 dark:text-yellow-400">
                     ⚠️ 未设置 GitHub Token，无法保存。请在
-                    <Link href="/admin" className="underline">管理后台</Link>
+                    <Link href="/admin.html" className="underline">管理后台</Link>
                     设置。
                   </p>
                 </div>

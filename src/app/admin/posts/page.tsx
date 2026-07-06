@@ -181,7 +181,7 @@ export default function AdminPostsPage() {
             ⚠️ 未设置 GitHub Token，无法管理文章
           </p>
           <Link
-            href="/admin"
+            href="/admin.html"
             className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-hover"
           >
             前往设置
@@ -218,7 +218,7 @@ export default function AdminPostsPage() {
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link
-            href="/admin"
+            href="/admin.html"
             className="rounded-lg border border-border px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text"
           >
             &larr; 返回
@@ -234,7 +234,7 @@ export default function AdminPostsPage() {
             🔄 刷新
           </button>
           <Link
-            href="/admin/editor"
+            href="/admin/editor.html"
             className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-hover"
           >
             新建文章
@@ -295,7 +295,7 @@ export default function AdminPostsPage() {
               </div>
               <div className="ml-4 flex shrink-0 gap-2">
                 <Link
-                  href={`/admin/editor?slug=${encodeURIComponent(post.slug)}&category=${encodeURIComponent(post.category)}`}
+                  href={`/admin/editor.html?slug=${encodeURIComponent(post.slug)}&category=${encodeURIComponent(post.category)}`}
                   className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary"
                 >
                   编辑

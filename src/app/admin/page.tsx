@@ -47,7 +47,7 @@ export default function AdminPage() {
       {/* Quick actions */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
         <Link
-          href="/admin/editor"
+          href="/admin/editor.html"
           className="rounded-xl border border-border bg-surface p-6 transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/5"
         >
           <div className="mb-2 text-2xl">✍️</div>
@@ -57,7 +57,7 @@ export default function AdminPage() {
           </p>
         </Link>
         <Link
-          href="/admin/posts"
+          href="/admin/posts.html"
           className="rounded-xl border border-border bg-surface p-6 transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/5"
         >
           <div className="mb-2 text-2xl">📋</div>
