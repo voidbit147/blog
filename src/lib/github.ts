@@ -3,7 +3,7 @@
  * Shared between editor and posts management pages.
  */
 
-export const REPO = "Doub1e-Happy/blog";
+export const REPO = "voidbit147/blog";
 
 /** Get GitHub Token from localStorage */
 export function getToken(): string {

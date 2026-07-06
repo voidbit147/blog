@@ -31,7 +31,7 @@ export function GiscusComments() {
 
   return (
     <Giscus
-      repo="Doub1e-Happy/blog"
+      repo="voidbit147/blog"
       repoId="R_kgDOO-----------"
       category="Announcements"
       categoryId="DIC_kwDOO-----------"

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-const REPO = "Doub1e-Happy/blog";
+const REPO = "voidbit147/blog";
 
 interface DeployStatus {
   status: "idle" | "pending" | "running" | "success" | "failure";

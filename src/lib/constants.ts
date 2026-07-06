@@ -5,12 +5,12 @@
 export const SITE = {
   title: "V0idbit",
   description: "全栈开发者的技术博客 — Web 开发、系统架构、创意编程。记录思考，分享造物。",
-  url: "https://doub1e-happy.github.io/blog",
+  url: "https://voidbit147.github.io/blog",
   basePath: process.env.NEXT_PUBLIC_BASE_PATH || "",
   author: {
     name: "V0idbit",
-    github: "https://github.com/Doub1e-Happy",
-    email: "31293@users.noreply.github.com",
+    github: "https://github.com/voidbit147",
+    email: "voidbit147@users.noreply.github.com",
   },
   postsPerPage: 6,
 } as const;
@@ -29,7 +29,7 @@ export const CATEGORIES = [
 ] as const;
 
 export const GISCUS = {
-  repo: "Doub1e-Happy/blog",
+  repo: "voidbit147/blog",
   repoId: "R_kgDOO-----------",
   category: "Announcements",
   categoryId: "DIC_kwDOO-----------",
