@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import {
@@ -273,7 +274,7 @@ ${content}`;
                 <div className="rounded-lg border border-yellow-500/30 bg-yellow-500/10 p-3">
                   <p className="text-xs text-yellow-600 dark:text-yellow-400">
                     ⚠️ 未设置 GitHub Token，无法保存。请在
-                    <a href="/admin" className="underline">管理后台</a>
+                    <Link href="/admin" className="underline">管理后台</Link>
                     设置。
                   </p>
                 </div>

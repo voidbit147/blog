@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { getToken, setToken } from "@/lib/github";
 
 export default function AdminPage() {
@@ -43,9 +44,9 @@ export default function AdminPage() {
     <div className="mx-auto max-w-3xl px-4 py-16">
       <h1 className="mb-8 text-3xl font-bold">管理后台</h1>
 
-      {/* 快捷入口 */}
+      {/* Quick actions */}
       <div className="mb-8 grid gap-4 sm:grid-cols-2">
-        <a
+        <Link
           href="/admin/editor"
           className="rounded-xl border border-border bg-surface p-6 transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/5"
         >
@@ -54,8 +55,8 @@ export default function AdminPage() {
           <p className="text-sm text-text-secondary">
             编写并发布一篇新博客文章
           </p>
-        </a>
-        <a
+        </Link>
+        <Link
           href="/admin/posts"
           className="rounded-xl border border-border bg-surface p-6 transition-all hover:border-primary hover:shadow-lg hover:shadow-primary/5"
         >
@@ -64,10 +65,10 @@ export default function AdminPage() {
           <p className="text-sm text-text-secondary">
             查看、编辑或删除已有文章
           </p>
-        </a>
+        </Link>
       </div>
 
-      {/* GitHub Token 设置 */}
+      {/* GitHub Token */}
       <div className="rounded-xl border border-border bg-surface p-6">
         <div className="mb-4 flex items-center justify-between">
           <div>
@@ -110,7 +111,7 @@ export default function AdminPage() {
         )}
       </div>
 
-      {/* 密码修改 */}
+      {/* Password change */}
       <div className="mt-4 rounded-xl border border-border bg-surface p-6">
         <div className="mb-4">
           <h3 className="font-semibold">🔐 管理密码</h3>
