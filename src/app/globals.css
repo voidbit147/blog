@@ -197,6 +197,19 @@ body {
   border-radius: 2px;
 }
 
+/* ── Milkdown editor host ── */
+.milkdown-host .milkdown {
+  min-height: 55vh;
+}
+.milkdown-host .milkdown .ProseMirror {
+  min-height: 55vh;
+  outline: none;
+  color: var(--color-text);
+}
+.milkdown-host .milkdown p {
+  color: var(--color-text);
+}
+
 /* ── View Transition for theme toggle ── */
 ::view-transition-old(root),
 ::view-transition-new(root) {

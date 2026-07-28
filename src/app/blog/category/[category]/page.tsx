@@ -1,7 +1,10 @@
 import { Metadata } from "next";
-import { getPostsByCategory, getAllCategories } from "@/lib/posts";
+import { getPostsByCategory } from "@/lib/posts";
 import { PostCard } from "@/components/blog/PostCard";
-import { CATEGORIES } from "@/lib/constants";
+import { getCategoriesSync } from "@/lib/server/categories";
+
+// 后台可随时新增文章，分类页每次请求读取文件系统。
+export const dynamic = "force-dynamic";
 
 interface Params {
   category: string;
@@ -13,15 +16,11 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { category } = await params;
-  const catInfo = CATEGORIES.find((c) => c.slug === category);
+  const catInfo = getCategoriesSync().find((c) => c.slug === category);
   return {
     title: catInfo?.name || category,
     description: catInfo?.description || `${category} 分类下的文章`,
   };
-}
-
-export function generateStaticParams(): Params[] {
-  return getAllCategories().map((c) => ({ category: c.slug }));
 }
 
 export default async function CategoryPage({
@@ -31,7 +30,7 @@ export default async function CategoryPage({
 }) {
   const { category } = await params;
   const posts = getPostsByCategory(category);
-  const catInfo = CATEGORIES.find((c) => c.slug === category);
+  const catInfo = getCategoriesSync().find((c) => c.slug === category);
 
   if (posts.length === 0) {
     return (

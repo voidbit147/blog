@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useTheme } from "next-themes";
+import { useTheme } from "@/components/providers/ThemeProvider";
 import { useEffect, useState } from "react";
 
 const Giscus = dynamic(() => import("@giscus/react"), {
@@ -14,7 +14,7 @@ const Giscus = dynamic(() => import("@giscus/react"), {
 });
 
 export function GiscusComments() {
-  const { theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -27,7 +27,7 @@ export function GiscusComments() {
     );
   }
 
-  const isDark = theme === "dark";
+  const isDark = resolvedTheme === "dark";
 
   return (
     <Giscus

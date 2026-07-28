@@ -6,8 +6,8 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-import { Post, Frontmatter, CategoryInfo, TagInfo } from "@/types";
-import { CATEGORIES } from "@/lib/constants";
+import { Post, CategoryInfo, TagInfo } from "@/types";
+import { getCategoriesSync } from "@/lib/server/categories";
 
 const CONTENT_ROOT = path.join(process.cwd(), "content/blog");
 
@@ -92,7 +92,14 @@ export function getPostBySlug(
   slug: string,
   includeDrafts = false,
 ): Post | null {
+  // 防 path traversal：slug 不允许含 .. 或绝对路径段，否则可跳出 content 目录。
+  if (!slug || slug.includes("..") || slug.startsWith("/")) return null;
   const filePath = path.join(CONTENT_ROOT, `${slug}.mdx`);
+  // 解析后必须仍在 CONTENT_ROOT 内，防御 join 后的穿越（如符号链接）。
+  const resolved = path.resolve(filePath);
+  if (!resolved.startsWith(CONTENT_ROOT + path.sep) && resolved !== CONTENT_ROOT) {
+    return null;
+  }
   if (!fs.existsSync(filePath)) return null;
   const post = parsePost(filePath);
   if (post.frontmatter.draft && !includeDrafts) return null;
@@ -119,14 +126,14 @@ export function getPostsByTag(tag: string): Post[] {
 
 /**
  * Get all categories with post counts.
- * 预定义分类（见 constants.ts 的 CATEGORIES）始终列出，即使尚无文章使用，
+ * 持久化分类（见 content/categories.json）始终列出，即使尚无文章使用，
  * 以便前端导航与空状态页正常工作。文章中出现的未知分类也会被收录。
  */
 export function getAllCategories(): CategoryInfo[] {
   const posts = getAllPosts();
   const map = new Map<string, { slug: string; name: string; count: number }>();
-  // 先放入预定义分类，保留中文名，计数为 0。
-  for (const c of CATEGORIES) {
+  // 先放入持久化分类，保留中文名，计数为 0。
+  for (const c of getCategoriesSync()) {
     map.set(c.slug.toLowerCase(), { slug: c.slug, name: c.name, count: 0 });
   }
   for (const p of posts) {

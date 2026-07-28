@@ -17,7 +17,11 @@
       "WebFetch(domain:github.com)",
       "PowerShell(& \"C:\\\\Program Files\\\\GitHub CLI\\\\gh.exe\" api repos/Doub1e-Happy/blog/pages --jq '.source' 2>&1)",
       "Bash(npx tsc *)",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(echo \"tsc exit=$?\")",
+      "Bash(npx eslint *)",
+      "Bash(grep -E \"^D:.*\\\\.\\(ts|tsx\\)$\")",
+      "Bash(echo \"tsc=$?\")"
     ]
   }
 }

@@ -3,6 +3,9 @@ import { getPostsByTag } from "@/lib/posts";
 import { PostCard } from "@/components/blog/PostCard";
 import { notFound } from "next/navigation";
 
+// 后台可随时新增文章，标签页每次请求读取文件系统。
+export const dynamic = "force-dynamic";
+
 interface Params {
   tag: string;
 }
@@ -17,11 +20,6 @@ export async function generateMetadata({
     title: `#${tag}`,
     description: `标签 #${tag} 下的文章`,
   };
-}
-
-export function generateStaticParams(): Params[] {
-  const { getAllTags } = require("@/lib/posts");
-  return getAllTags().map((t: { name: string }) => ({ tag: t.name }));
 }
 
 export default async function TagPage({

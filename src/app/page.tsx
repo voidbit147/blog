@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getAllPosts, getRecentPosts } from "@/lib/posts";
-import { CATEGORIES, SITE } from "@/lib/constants";
+import { SITE } from "@/lib/constants";
+import { getCategoriesSync } from "@/lib/server/categories";
 import { PostCard } from "@/components/blog/PostCard";
 import { Avatar } from "@/components/ui/Avatar";
 import { TypewriterTitle } from "@/components/effects/TypewriterTitle";
@@ -12,9 +13,13 @@ import { WeatherWidget } from "@/components/widgets/WeatherWidget";
 import { SiteStats } from "@/components/widgets/SiteStats";
 import { MiniCalendar } from "@/components/widgets/MiniCalendar";
 
+// 文章随时可能通过后台新增/修改，首页每次请求都重新读取文件系统。
+export const dynamic = "force-dynamic";
+
 export default function HomePage() {
   const recentPosts = getRecentPosts(3);
   const allPosts = getAllPosts();
+  const categories = getCategoriesSync();
 
   const tagCount: Record<string, number> = {};
   for (const post of allPosts) {
@@ -84,7 +89,7 @@ export default function HomePage() {
         <section className="py-8">
           <SiteStats
             postCount={allPosts.length}
-            categoryCount={CATEGORIES.length}
+            categoryCount={categories.length}
             tagCount={uniqueTags}
           />
         </section>
@@ -117,7 +122,7 @@ export default function HomePage() {
         <section className="py-8">
           <h2 className="mb-6 text-2xl font-bold">分类</h2>
           <div className="grid gap-4 sm:grid-cols-3">
-            {CATEGORIES.map((cat) => {
+            {categories.map((cat) => {
               const count = allPosts.filter(
                 (p) => p.frontmatter.category === cat.slug
               ).length;

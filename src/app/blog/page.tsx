@@ -2,6 +2,9 @@ import { Metadata } from "next";
 import { getAllPosts, getAllCategories, getAllTags } from "@/lib/posts";
 import { PostCard } from "@/components/blog/PostCard";
 
+// 后台可随时新增文章，列表每次请求重新读取。
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "博客",
   description: "全部文章",

@@ -1,22 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import {
-  getToken,
-  listGitHubDir,
-  fetchFileFromGitHub,
-  parseFrontmatter,
-  deleteFileFromGitHub,
-  triggerDeploy,
-} from "@/lib/github";
-import { GitHubStatus } from "@/components/admin/GitHubStatus";
-import { CATEGORIES } from "@/lib/constants";
-
-function getBasePath(): string {
-  if (typeof window === "undefined") return "";
-  const match = window.location.pathname.match(/^(\/blog)(?=\/)/);
-  return match ? match[1] : "";
-}
+import Link from "next/link";
 
 interface PostInfo {
   slug: string;
@@ -25,18 +10,20 @@ interface PostInfo {
   date: string;
   category: string;
   tags: string[];
-  path: string;
-  sha: string;
+  relPath: string;
+  mtime: number;
 }
 
 function DeleteConfirmDialog({
   title,
   onConfirm,
   onCancel,
+  deleting,
 }: {
   title: string;
   onConfirm: () => void;
   onCancel: () => void;
+  deleting: boolean;
 }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -47,7 +34,7 @@ function DeleteConfirmDialog({
           </div>
           <h3 className="text-lg font-bold">确认删除</h3>
           <p className="mt-2 text-sm text-text-secondary">
-            确定要删除文章「{title}」吗？此操作将从 GitHub 仓库中删除文件并触发重新部署，不可撤销。
+            确定要删除文章「{title}」吗？此操作将从服务器删除文件，不可撤销。
           </p>
         </div>
         <div className="flex gap-3">
@@ -59,9 +46,10 @@ function DeleteConfirmDialog({
           </button>
           <button
             onClick={onConfirm}
-            className="flex-1 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-red-600"
+            disabled={deleting}
+            className="flex-1 rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-red-600 disabled:opacity-50"
           >
-            确认删除
+            {deleting ? "删除中..." : "确认删除"}
           </button>
         </div>
       </div>
@@ -73,74 +61,28 @@ export default function AdminPostsPage() {
   const [posts, setPosts] = useState<PostInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [token, setToken] = useState("");
-  const [basePath, setBasePath] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<PostInfo | null>(null);
   const [deleteError, setDeleteError] = useState("");
 
-  useEffect(() => {
-    setBasePath(getBasePath());
-    setToken(getToken());
-  }, []);
-
   const fetchPosts = useCallback(async () => {
-    if (!token) {
-      setLoading(false);
-      setError("未设置 GitHub Token，请在管理后台设置。");
-      return;
-    }
-
     setLoading(true);
     setError("");
 
     try {
-      const allPosts: PostInfo[] = [];
-
-      for (const cat of CATEGORIES) {
-        const entries = await listGitHubDir(
-          `content/blog/${cat.slug}`,
-          token
-        );
-        if (!entries) continue;
-
-        const mdxFiles = entries.filter(
-          (e) => e.type === "file" && e.name.endsWith(".mdx")
-        );
-
-        for (const file of mdxFiles) {
-          const result = await fetchFileFromGitHub(file.path, token);
-          if (!result) continue;
-
-          const { frontmatter } = parseFrontmatter(result.content);
-          const slug = file.name.replace(/\.mdx$/, "");
-
-          allPosts.push({
-            slug,
-            title: (frontmatter.title as string) || slug,
-            description: (frontmatter.description as string) || "",
-            date: (frontmatter.date as string) || "",
-            category: (frontmatter.category as string) || cat.slug,
-            tags: (frontmatter.tags as string[]) || [],
-            path: file.path,
-            sha: result.sha,
-          });
-        }
-      }
-
-      allPosts.sort(
-        (a, b) =>
-          new Date(b.date).getTime() - new Date(a.date).getTime()
-      );
-
-      setPosts(allPosts);
+      const res = await fetch("/api/admin/posts");
+      if (!res.ok) throw new Error("加载失败");
+      const data = (await res.json()) as { posts: PostInfo[] };
+      setPosts(data.posts);
     } catch (err) {
       setError(`加载失败：${(err as Error).message}`);
     }
     setLoading(false);
-  }, [token]);
+  }, []);
 
   useEffect(() => {
+    // 首次挂载拉取文章列表；setState 在 async 函数内，非 effect 同步调用。
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPosts();
   }, [fetchPosts]);
 
@@ -148,48 +90,29 @@ export default function AdminPostsPage() {
     setDeleting(post.slug);
     setDeleteError("");
 
-    const success = await deleteFileFromGitHub(
-      post.path,
-      post.sha,
-      token,
-      `🗑️ 删除文章：${post.title}`
-    );
-
-    if (success) {
-      await triggerDeploy(token);
-      window.__githubStatusStartPolling?.();
+    try {
+      const res = await fetch(
+        `/api/admin/posts/${encodeURIComponent(post.slug)}?category=${encodeURIComponent(post.category)}`,
+        { method: "DELETE" },
+      );
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || "删除失败");
+      }
       setPosts((prev) => prev.filter((p) => p.slug !== post.slug));
       setDeleteTarget(null);
-    } else {
-      setDeleteError(`删除「${post.title}」失败，请检查 Token 权限。`);
+    } catch (err) {
+      setDeleteError(`删除「${post.title}」失败：${(err as Error).message}`);
     }
 
     setDeleting(null);
   };
 
-  if (!token && !loading) {
-    return (
-      <div className="mx-auto max-w-3xl px-4 py-16">
-        <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 text-center">
-          <p className="mb-3 text-yellow-600 dark:text-yellow-400">
-            ⚠️ 未设置 GitHub Token，无法管理文章
-          </p>
-          <a
-            href={`${basePath}/admin.html`}
-            className="inline-block rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-hover"
-          >
-            前往设置
-          </a>
-        </div>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-16 text-center text-text-secondary">
-        <span className="inline-block animate-spin mr-2">⟳</span>
-        正在从 GitHub 加载文章列表...
+        <span className="mr-2 inline-block animate-spin">⟳</span>
+        正在加载文章列表...
       </div>
     );
   }
@@ -208,12 +131,12 @@ export default function AdminPostsPage() {
     <div className="mx-auto max-w-3xl px-4 py-16">
       <div className="mb-8 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <a
-            href={`${basePath}/admin.html`}
+          <Link
+            href="/admin"
             className="rounded-lg border border-border px-3 py-1.5 text-sm text-text-secondary transition-colors hover:text-text"
           >
             &larr; 返回
-          </a>
+          </Link>
           <h1 className="text-3xl font-bold">管理文章</h1>
         </div>
         <div className="flex gap-2">
@@ -224,20 +147,14 @@ export default function AdminPostsPage() {
           >
             🔄 刷新
           </button>
-          <a
-            href={`${basePath}/admin/editor.html`}
+          <Link
+            href="/admin/editor"
             className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-primary-hover"
           >
             新建文章
-          </a>
+          </Link>
         </div>
       </div>
-
-      {token && (
-        <div className="mb-4">
-          <GitHubStatus token={token} />
-        </div>
-      )}
 
       {deleteError && (
         <div className="mb-4 rounded-lg bg-red-500/10 px-4 py-2 text-sm text-red-600 dark:text-red-400">
@@ -245,9 +162,7 @@ export default function AdminPostsPage() {
         </div>
       )}
 
-      <p className="mb-4 text-sm text-text-secondary">
-        共 {posts.length} 篇文章
-      </p>
+      <p className="mb-4 text-sm text-text-secondary">共 {posts.length} 篇文章</p>
 
       {posts.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border p-12 text-center text-text-secondary">
@@ -281,25 +196,24 @@ export default function AdminPostsPage() {
                 )}
               </div>
               <div className="ml-4 flex shrink-0 gap-2">
-                <a
-                  href={`${basePath}/admin/editor.html?slug=${encodeURIComponent(post.slug)}&category=${encodeURIComponent(post.category)}`}
+                <Link
+                  href={`/admin/editor?slug=${encodeURIComponent(post.slug)}&category=${encodeURIComponent(post.category)}`}
                   className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary"
                 >
                   编辑
-                </a>
-                <a
-                  href={`${basePath}/blog/${post.category}/${post.slug}`}
+                </Link>
+                <Link
+                  href={`/blog/${post.category}/${post.slug}`}
                   target="_blank"
                   className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-secondary transition-colors hover:border-primary hover:text-primary"
                 >
                   查看
-                </a>
+                </Link>
                 <button
                   onClick={() => setDeleteTarget(post)}
-                  disabled={deleting === post.slug}
-                  className="rounded-lg border border-red-500/30 px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:border-red-500 hover:bg-red-500/10 disabled:opacity-50"
+                  className="rounded-lg border border-red-500/30 px-3 py-1.5 text-xs font-medium text-red-500 transition-colors hover:border-red-500 hover:bg-red-500/10"
                 >
-                  {deleting === post.slug ? "删除中..." : "删除"}
+                  删除
                 </button>
               </div>
             </div>
@@ -310,6 +224,7 @@ export default function AdminPostsPage() {
       {deleteTarget && (
         <DeleteConfirmDialog
           title={deleteTarget.title}
+          deleting={deleting === deleteTarget.slug}
           onConfirm={() => handleDelete(deleteTarget)}
           onCancel={() => {
             setDeleteTarget(null);

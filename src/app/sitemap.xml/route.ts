@@ -1,7 +1,7 @@
 import { SITE } from "@/lib/constants";
 import { getAllPosts, getAllCategories, getAllTags } from "@/lib/posts";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export async function GET() {
   const posts = getAllPosts();

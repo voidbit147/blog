@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/providers/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ProgressBar } from "@/components/layout/ProgressBar";
@@ -56,7 +56,9 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      {/* <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} /> */}
       <body className="flex min-h-full flex-col bg-bg text-text">
+
         <ThemeProvider>
           <ProgressBar />
           <Header />

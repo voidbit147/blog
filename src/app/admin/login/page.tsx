@@ -1,30 +1,39 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-export function AdminAuthGate({ children }: { children: React.ReactNode }) {
-  const [authenticated, setAuthenticated] = useState(false);
+export default function AdminLoginPage() {
+  const router = useRouter();
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const adminPassword =
-      typeof window !== "undefined"
-        ? localStorage.getItem("admin_password") || "admin123"
-        : "admin123";
+    setError("");
+    setLoading(true);
 
-    if (password === adminPassword) {
-      setAuthenticated(true);
-      setError(false);
-    } else {
-      setError(true);
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
+
+      if (res.ok) {
+        router.push("/admin");
+        router.refresh();
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "登录失败");
+      }
+    } catch {
+      setError("网络错误，请重试");
+    } finally {
+      setLoading(false);
     }
   };
-
-  if (authenticated) {
-    return <>{children}</>;
-  }
 
   return (
     <div className="mx-auto flex max-w-sm items-center justify-center px-4 py-32">
@@ -45,20 +54,19 @@ export function AdminAuthGate({ children }: { children: React.ReactNode }) {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              setError(false);
+              setError("");
             }}
             placeholder="密码"
             className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-text placeholder:text-text-secondary/40 transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
             autoFocus
           />
-          {error && (
-            <p className="text-sm text-red-500">密码错误</p>
-          )}
+          {error && <p className="text-sm text-red-500">{error}</p>}
           <button
             type="submit"
-            className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/25"
+            disabled={loading}
+            className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-primary/25 disabled:opacity-50"
           >
-            登录
+            {loading ? "登录中..." : "登录"}
           </button>
         </form>
       </div>

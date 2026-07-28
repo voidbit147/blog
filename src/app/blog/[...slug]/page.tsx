@@ -1,11 +1,14 @@
 import { Metadata } from "next";
-import { getPostBySlug, getAllPosts } from "@/lib/posts";
+import { getPostBySlug } from "@/lib/posts";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { PostContent } from "@/components/blog/PostContent";
 import { TableOfContents } from "@/components/mdx/TableOfContents";
 import { GiscusComments } from "@/components/comments/GiscusComments";
 import { TagList } from "@/components/blog/TagList";
+
+// 后台可随时新增/修改文章，详情页每次请求读取文件系统，新文章立即可见。
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -24,12 +27,6 @@ export async function generateMetadata({
     title: post.frontmatter.title,
     description: post.frontmatter.description,
   };
-}
-
-export function generateStaticParams(): { slug: string[] }[] {
-  return getAllPosts().map((post) => ({
-    slug: post.slug.split("/"),
-  }));
 }
 
 export default async function BlogPostPage({

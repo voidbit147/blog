@@ -1,6 +1,6 @@
 export function Avatar({ size = 80, src, alt = "voidbit 头像" }: { size?: number; src?: string; alt?: string }) {
   const borderWidth = Math.max(2, Math.round(size / 48));
-  const finalSrc = src || "/blog/images/avator.jpg";
+  const finalSrc = src || "/images/avator.jpg";
 
   return (
     <div

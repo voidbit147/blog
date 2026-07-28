@@ -1,0 +1,27 @@
+[
+  {
+    "slug": "tech",
+    "name": "技术",
+    "description": "编程、架构与工具的深度探索。"
+  },
+  {
+    "slug": "tutorials",
+    "name": "教程",
+    "description": "手把手的实战指南与踩坑记录。"
+  },
+  {
+    "slug": "life",
+    "name": "生活",
+    "description": "随笔、感悟，以及代码之外的思考。"
+  },
+  {
+    "slug": "algorithm",
+    "name": "算法",
+    "description": "数据结构、算法题解与思路总结。"
+  },
+  {
+    "slug": "interview",
+    "name": "面经",
+    "description": "面试题目、流程与复盘经验。"
+  }
+]

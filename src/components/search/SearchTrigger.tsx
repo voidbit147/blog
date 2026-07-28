@@ -15,6 +15,8 @@ export function SearchTrigger() {
       }
     };
     window.addEventListener("keydown", onKeyDown);
+    // 平台检测在客户端 mount 后才能做，setState 属必要的客户端初始化。
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMeta(
       typeof navigator !== "undefined" && navigator.platform.includes("Mac"),
     );
@@ -40,7 +42,10 @@ export function SearchTrigger() {
         <path d="M13 13l4 4" />
       </svg>
       <span>搜索</span>
-      <kbd className="ml-2 rounded border border-border px-1.5 py-0.5 text-xs text-text-secondary/60">
+      <kbd
+        suppressHydrationWarning
+        className="ml-2 rounded border border-border px-1.5 py-0.5 text-xs text-text-secondary/60"
+      >
         {meta ? "⌘K" : "Ctrl+K"}
       </kbd>
     </button>
