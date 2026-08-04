@@ -11,9 +11,10 @@
   --color-primary-hover: oklch(0.48 0.22 265);
   --color-accent: oklch(0.65 0.22 180);
   --color-code-bg: oklch(0.97 0.005 260);
-  /* 标题/界面用黑体，正文用宋体，代码用 Fira Code。拉丁字符回退到匹配族。 */
-  --font-sans: "SimHei", "Heiti SC", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
-  --font-serif: "SimSun", "Songti SC", "STSong", "Source Han Serif SC", serif;
+  /* 全站英文一律用 Fira Code（等宽），中文按场景回退：标题/界面→黑体，正文→宋体，代码→monospace。
+     Fira Code 不含中文字形，浏览器会自动回退到族里后续的中文字体。 */
+  --font-sans: var(--font-fira-code), "Fira Code", "SimHei", "Heiti SC", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --font-serif: var(--font-fira-code), "Fira Code", "SimSun", "Songti SC", "STSong", "Source Han Serif SC", serif;
   --font-mono: var(--font-fira-code), "Fira Code", "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
@@ -36,7 +37,9 @@
    选择器 .dark .milkdown 特异性高于 frame.css 的 .milkdown，确保暗色胜出；
    非暗色时此规则不命中，编辑器保持白底黑字。 */
 .milkdown {
-  /* 代码块用 Fira Code，与全站代码字体一致 */
+  /* 全站英文统一 Fira Code：编辑器正文/界面、标题、代码均优先 Fira Code，中文回退。 */
+  --crepe-font-default: var(--font-fira-code), "Fira Code", "SimSun", "Songti SC", serif;
+  --crepe-font-title: var(--font-fira-code), "Fira Code", "SimHei", "Heiti SC", sans-serif;
   --crepe-font-code: var(--font-fira-code), "Fira Code", Menlo, Monaco, monospace;
 }
 
