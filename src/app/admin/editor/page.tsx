@@ -261,7 +261,7 @@ export default function AdminEditorPage() {
               <button
                 type="button"
                 onClick={() => setShowNewCategory(true)}
-                className="text-xs font-medium text-primary transition-colors hover:text-primary-hover"
+                className="text-xs font-medium text-primary transition-colors hover:text-primary-hover" suppressHydrationWarning
               >
                 + 新建分类
               </button>

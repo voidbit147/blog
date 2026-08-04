@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fira_Code } from "next/font/google";
 import { ThemeProvider, THEME_INIT_SCRIPT } from "@/components/providers/ThemeProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -11,13 +11,10 @@ import { MusicPlayer } from "@/components/widgets/MusicPlayer";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// 代码字体：Fira Code（等宽，带连字）。正文用宋体、标题用黑体，均为系统中文字体，
+// 在 globals.css 的字体变量里声明，无需从 Google Fonts 加载。
+const firaCode = Fira_Code({
+  variable: "--font-fira-code",
   subsets: ["latin"],
 });
 
@@ -53,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="zh-CN"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${firaCode.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       {/* <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} /> */}

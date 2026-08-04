@@ -29,8 +29,8 @@ export function PostCard({ post }: { post: Post }) {
 
       {/* Meta */}
       <div className="flex items-center gap-3 text-xs text-text-secondary/70">
-        <time dateTime={frontmatter.date}>{date}</time>
-        <span>&middot;</span>
+        <time dateTime={frontmatter.date} suppressHydrationWarning>{date}</time>
+        <span suppressHydrationWarning>&middot;</span>
         <span>{readingTime} min read</span>
         {frontmatter.tags.length > 0 && (
           <>

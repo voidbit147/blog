@@ -11,8 +11,10 @@
   --color-primary-hover: oklch(0.48 0.22 265);
   --color-accent: oklch(0.65 0.22 180);
   --color-code-bg: oklch(0.97 0.005 260);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* 标题/界面用黑体，正文用宋体，代码用 Fira Code。拉丁字符回退到匹配族。 */
+  --font-sans: "SimHei", "Heiti SC", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+  --font-serif: "SimSun", "Songti SC", "STSong", "Source Han Serif SC", serif;
+  --font-mono: var(--font-fira-code), "Fira Code", "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -29,11 +31,51 @@
   --color-code-bg: oklch(0.1 0 0);
 }
 
+/* ── Milkdown Crepe 暗色主题变量 ──
+   仅在站点暗色（<html class="dark">）时覆盖 frame.css 的亮色变量。
+   选择器 .dark .milkdown 特异性高于 frame.css 的 .milkdown，确保暗色胜出；
+   非暗色时此规则不命中，编辑器保持白底黑字。 */
+.milkdown {
+  /* 代码块用 Fira Code，与全站代码字体一致 */
+  --crepe-font-code: var(--font-fira-code), "Fira Code", Menlo, Monaco, monospace;
+}
+
+.dark .milkdown {
+  --crepe-color-background: #1a1a1a;
+  --crepe-color-on-background: #e6e6e6;
+  --crepe-color-surface: #121212;
+  --crepe-color-surface-low: #1c1c1c;
+  --crepe-color-on-surface: #d1d1d1;
+  --crepe-color-on-surface-variant: #a9a9a9;
+  --crepe-color-outline: #757575;
+  --crepe-color-primary: #b5b5b5;
+  --crepe-color-secondary: #4d4d4d;
+  --crepe-color-on-secondary: #d6d6d6;
+  --crepe-color-inverse: #e5e5e5;
+  --crepe-color-on-inverse: #2a2a2a;
+  --crepe-color-inline-code: #ff6666;
+  --crepe-color-error: #ff6666;
+  --crepe-color-hover: #232323;
+  --crepe-color-selected: #2f2f2f;
+  --crepe-color-inline-area: #2b2b2b;
+  --crepe-shadow-1:
+    0px 1px 2px 0px rgba(255, 255, 255, 0.3),
+    0px 1px 3px 1px rgba(255, 255, 255, 0.15);
+  --crepe-shadow-2:
+    0px 1px 2px 0px rgba(255, 255, 255, 0.3),
+    0px 2px 6px 2px rgba(255, 255, 255, 0.15);
+}
+
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-sans);
+  font-family: var(--font-serif);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 全站所有标题用黑体（博文标题、卡片标题、Header 等） */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
 }
 
 /* ── Prose overrides for markdown content ── */

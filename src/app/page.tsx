@@ -49,10 +49,10 @@ export default function HomePage() {
             <Avatar size={96} />
           </div>
           <TypewriterTitle />
-          <p className="mb-1 text-lg font-medium text-text-secondary">
+          <p className="mb-1 text-lg font-medium text-text-secondary" suppressHydrationWarning>
             网络安全 / AI For CyberSecurity
           </p>
-          <p className="mx-auto max-w-lg whitespace-nowrap text-text-secondary">
+          <p className="mx-auto max-w-lg whitespace-nowrap text-text-secondary" suppressHydrationWarning>
             {SITE.description}
           </p>
 

@@ -7,8 +7,11 @@ import {
   useInstance,
 } from "@milkdown/react";
 import { Crepe, CrepeFeature } from "@milkdown/crepe";
+// common/style.css 聚合了 toolbar / top-bar / link-tooltip 等所有组件布局样式；
+// frame.css 提供亮色主题变量。暗色变量不在此无条件引入——它在 globals.css 的
+// .dark 作用域下按站点主题叠加，避免编辑器永远是暗色。
+import "@milkdown/crepe/theme/common/style.css";
 import "@milkdown/crepe/theme/frame.css";
-import "@milkdown/crepe/theme/frame-dark.css";
 import { useRef, useEffect, useCallback } from "react";
 
 /**

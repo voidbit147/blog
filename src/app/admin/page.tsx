@@ -5,7 +5,7 @@ export default function AdminPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-16">
       <div className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-bold">管理后台</h1>
+        <h1 className="text-3xl font-bold" suppressHydrationWarning>管理后台</h1>
         <LogoutButton />
       </div>
 

@@ -142,7 +142,7 @@ export function SiteStats({ postCount, categoryCount, tagCount }: SiteStatsProps
         <span className="text-base font-bold leading-tight text-text">
           {mounted ? uptime.display : "..."}
         </span>
-        <span className="text-xs text-text-secondary">运营时长</span>
+        <span className="text-xs text-text-secondary" suppressHydrationWarning>运营时长</span>
       </div>
     </div>
   );
